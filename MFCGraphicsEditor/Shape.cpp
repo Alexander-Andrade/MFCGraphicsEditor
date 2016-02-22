@@ -143,10 +143,8 @@ void Arrow::draw(CDC* pDC) {
 
 void Arrow::Serialize(CArchive& ar) {
 	Shape::Serialize(ar);
-	_points[0] = _backFig->points()[0];
-	_points[1] = _frontFig->points()[1];
 	if (ar.IsStoring()) {
-		ar << _points[0] << _points[1];
+		ar << _backFig->points()[0] << _frontFig->points()[1];
 	}
 	else{
 		ar >> _points[0] >> _points[1];
