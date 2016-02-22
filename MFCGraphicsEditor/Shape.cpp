@@ -8,7 +8,7 @@
 
 // Shape
 Shape::Shape(CPoint& topleft = CPoint(0,0),CPoint& bottomright = CPoint(0,0),int n_points = 2) {
-	_points.SetSize(n_points);
+	_points.resize(n_points);
 	_points[0] = topleft;
 	_points[1] = bottomright;
 	_pen.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
@@ -34,6 +34,11 @@ bool Shape::isInternalPoint(CPoint& p) {
 	std::pair<int, int> x_coords = std::minmax(_points[0].x,_points[1].x);
 	std::pair<int, int> y_coord = std::minmax(_points[0].y, _points[1].y);
 	return p.x > x_coords.first && p.x < x_coords.second && p.y > y_coord.first && p.y < y_coord.second;
+}
+
+CRect Shape::getBoundingRect() {
+	// ? may be correctAnchorPoints
+	return CRect(_points[0],_points[1]);
 }
 
 // Rectangle
@@ -97,14 +102,23 @@ void Triangle::draw(CDC* pDC) {
 
 
 //Arrow
-Arrow::Arrow(CPoint& backend = CPoint(0, 0), CPoint& frontend = CPoint(0, 0)) : Shape(backend, frontend) {
+Arrow::Arrow(CPoint& backend = CPoint(0, 0), CPoint& frontend = CPoint(0, 0)) : Shape(backend, frontend) ,
+_backFig(nullptr),_frontFig(nullptr){
 }
 IMPLEMENT_SERIAL(Arrow, Shape, 2)
 Arrow::~Arrow() {
 }
 
 void Arrow::draw(CDC* pDC) {
-	return;
+	if (_backFig == nullptr) {
+		pDC->MoveTo(_points[0]);
+		pDC->LineTo(_points[1]);
+	}
+	else {
+		pDC->MoveTo(_backFig->getBoundingRect().CenterPoint());
+		pDC->LineTo(_frontFig->getBoundingRect().CenterPoint());
+	}
+	
 }
 
 void Arrow::Serialize(CArchive& ar) {

@@ -182,7 +182,11 @@ BOOL CMFCGraphicsEditorView::OnEraseBkgnd(CDC* pDC){
 
 
 void CMFCGraphicsEditorView::OnLButtonUp(UINT nFlags, CPoint point){
-	// TODO: Add your message handler code here and/or call default
+	//complete arrow creation
+	CMFCGraphicsEditorDoc* doc = GetDocument();
+	if (doc->m_stateMashine == StateMashine::ArrowCreature)
+		doc->finishArrowCreation(point);
+
 
 	CView::OnLButtonUp(nFlags, point);
 }

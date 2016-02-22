@@ -1,12 +1,13 @@
 #pragma once
 #include <algorithm>
 #include <utility>
+#include <vector>
 
 // Shape command target
 class Shape : public CObject{
 	DECLARE_SERIAL(Shape)
 protected:
-	CArray<CPoint> _points;
+	std::vector<CPoint> _points;
 	CPen _pen;
 	CBrush _brush;
 public:
@@ -28,7 +29,8 @@ public:
 		pOldBrush->DeleteObject();
 	}
 	virtual bool isInternalPoint(CPoint& p);
-	CArray<CPoint>& points() { return _points; }
+	virtual CRect getBoundingRect();
+	std::vector<CPoint>& points() { return _points; }
 };
 
 
@@ -69,10 +71,14 @@ public:
 
 class Arrow : public Shape{
 	DECLARE_SERIAL(Arrow)
+private:
+	Shape* _backFig;
+	Shape* _frontFig;
 public:
 	Arrow(CPoint&, CPoint&);
 	~Arrow();
 	virtual void draw(CDC* pDC) override;
 	virtual void Serialize(CArchive& ar) override;
-	
+	void setBackFig(Shape* backFig) { _backFig = backFig; }
+	void setFrontFig(Shape* frontFig) { _frontFig = frontFig; }
 };

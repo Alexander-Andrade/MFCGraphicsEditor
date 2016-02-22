@@ -164,8 +164,32 @@ void CMFCGraphicsEditorDoc::addANewShapeToList(CPoint& p1, CPoint& p2) {
 }
 
 void CMFCGraphicsEditorDoc::stretchShapeUnderCreation(CPoint& p2) {
-	CArray<CPoint>& points_ref = m_figures.back()->points();
+	std::vector<CPoint>& points_ref = m_figures.back()->points();
 	points_ref[1] = p2;
 	//Shape::correctAnchorPoints(points_ref[0],points_ref[1]);
 }
 
+Shape* CMFCGraphicsEditorDoc::theFigure(CPoint& p) {
+	for (std::unique_ptr<Shape>& fig : m_figures)
+		if (fig->isInternalPoint(p) == true)
+			return fig.get();
+	return nullptr;
+}
+
+void CMFCGraphicsEditorDoc::finishArrowCreation(CPoint& p) {
+	Arrow* fig = (Arrow*)m_figures.back().get();
+	//is figure an arrow
+	if (typeid(*fig) == typeid(Arrow)) {
+		//test the edge points
+		Shape* back_fig = theFigure(fig->points()[0]);
+		Shape* front_fig = theFigure(p);
+		if (back_fig != nullptr && front_fig != nullptr) {
+			fig->points()[1] = p;
+			fig->setBackFig(back_fig);
+			fig->setFrontFig(front_fig);
+		}
+		//delete incorrect arrow
+		else
+			m_figures.pop_back();
+	}
+}

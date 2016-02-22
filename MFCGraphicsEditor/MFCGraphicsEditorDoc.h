@@ -11,6 +11,7 @@
 #include <functional>
 #include <initializer_list>
 #include <memory>
+#include <typeinfo>
 
 class CMFCGraphicsEditorDoc : public CDocument
 {
@@ -29,6 +30,9 @@ public:
 	Shape* getFigureFromFactory(CPoint& p1, CPoint& p2);
 	void addANewShapeToList(CPoint& p1,CPoint& p2);
 	void stretchShapeUnderCreation(CPoint& p);
+	//determine whether Cpoint situated at one of the created figures
+	Shape* theFigure(CPoint& p);
+	void finishArrowCreation(CPoint& p);
 // Overrides
 public:
 	virtual BOOL OnNewDocument();
