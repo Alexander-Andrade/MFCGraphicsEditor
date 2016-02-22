@@ -69,15 +69,13 @@ void CMFCGraphicsEditorView::OnDraw(CDC* pDC)
 	if (!pDoc)
 		return;
 
-	if (pDoc->m_figures.GetSize() != 0) {
+	if ( ! pDoc->m_figures.empty()) {
 		CRect rect;
 		GetClientRect(&rect);
 		m_dcMem.FillSolidRect(rect, RGB(255, 255, 255));
 
-		POSITION pos = pDoc->m_figures.GetHeadPosition();
-		int size = pDoc->m_figures.GetCount();
-		for (int i = 0; i < size; i++)
-			pDoc->m_figures.GetNext(pos)->storeStateAndDraw(&m_dcMem);
+		for(std::unique_ptr<Shape>& sh_ptr : pDoc->m_figures)
+			sh_ptr->storeStateAndDraw(&m_dcMem);
 
 		pDC->BitBlt(0, 0, rect.Width(), rect.Height(), &m_dcMem, 0, 0, SRCCOPY);
 	}

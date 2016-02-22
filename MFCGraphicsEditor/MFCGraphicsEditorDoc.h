@@ -7,9 +7,10 @@
 #include "Shape.h"
 #include "StateMashine.h"
 #include <map>
+#include <list>
 #include <functional>
 #include <initializer_list>
-
+#include <memory>
 
 class CMFCGraphicsEditorDoc : public CDocument
 {
@@ -19,7 +20,7 @@ protected: // create from serialization only
 
 // Attributes
 public:
-	CList<Shape*> m_figures;
+	std::list<std::unique_ptr<Shape>> m_figures;
 	StateMashine m_stateMashine;
 	std::map<StateMashine, std::function<Shape*(CPoint& p1, CPoint& p2)>> _factoryMap;
 // Operations
@@ -56,9 +57,4 @@ protected:
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
 public:
-//	afx_msg void OnRectButton();
-//	afx_msg void OnArrowButton();
-//	afx_msg void OnEllipseButton();
-//	afx_msg void OnModeButton();
-//	afx_msg void OnTriangleButton();
 };

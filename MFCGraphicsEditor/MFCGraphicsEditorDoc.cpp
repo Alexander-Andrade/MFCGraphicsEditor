@@ -40,9 +40,6 @@ CMFCGraphicsEditorDoc::CMFCGraphicsEditorDoc()
 
 CMFCGraphicsEditorDoc::~CMFCGraphicsEditorDoc()
 {
-	POSITION pos = m_figures.GetHeadPosition();
-	for (int i = 0; i < m_figures.GetCount(); i++)
-		delete m_figures.GetNext(pos);
 }
 
 BOOL CMFCGraphicsEditorDoc::OnNewDocument()
@@ -163,12 +160,11 @@ Shape* CMFCGraphicsEditorDoc::getFigureFromFactory(CPoint& p1, CPoint& p2) {
 }
 
 void CMFCGraphicsEditorDoc::addANewShapeToList(CPoint& p1, CPoint& p2) {
-	m_figures.AddTail(getFigureFromFactory(p1,p2));
+	m_figures.push_back( std::unique_ptr<Shape>(getFigureFromFactory(p1, p2))  );
 }
 
 void CMFCGraphicsEditorDoc::stretchShapeUnderCreation(CPoint& p2) {
-	Shape* createdShape = m_figures.GetTail();
-	CArray<CPoint>& points_ref = createdShape->points();
+	CArray<CPoint>& points_ref = m_figures.back()->points();
 	points_ref[1] = p2;
 	//Shape::correctAnchorPoints(points_ref[0],points_ref[1]);
 }
