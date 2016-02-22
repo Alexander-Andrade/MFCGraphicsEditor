@@ -63,11 +63,20 @@ void CMFCGraphicsEditorDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		// TODO: add storing code here
+		ar << m_figures.size();
+		for (std::unique_ptr<Shape>& sh : m_figures)
+			ar << sh.get();
 	}
 	else
 	{
-		// TODO: add loading code here
+		int size;
+		ar >> size;
+		Shape* sh;
+		for (int i = 0; i < size; i++) {
+			ar >> sh;
+			m_figures.push_back(std::unique_ptr<Shape>(sh));
+		}
+		
 	}
 }
 

@@ -20,6 +20,22 @@ Shape::~Shape(){
 
 void Shape::Serialize(CArchive& ar) {
 	CObject::Serialize(ar);
+	if (ar.IsStoring()) {
+		ar << _points.size();
+		for (CPoint& p : _points)
+			ar << p;
+		//ar << _pen;
+		//ar << _brush;
+	}
+	else {
+		int size;
+		ar >> size;
+		_points.resize(size);
+		for (CPoint& p : _points)
+			ar >> p;
+		//_pen.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+		//_brush.CreateSolidBrush(RGB(255, 0, 0));
+	}
 }
 
 void Shape::correctAnchorPoints(CPoint& p1, CPoint& p2) {
@@ -127,4 +143,12 @@ void Arrow::draw(CDC* pDC) {
 
 void Arrow::Serialize(CArchive& ar) {
 	Shape::Serialize(ar);
+	_points[0] = _backFig->points()[0];
+	_points[1] = _frontFig->points()[1];
+	if (ar.IsStoring()) {
+		ar << _points[0] << _points[1];
+	}
+	else{
+		ar >> _points[0] >> _points[1];
+	}
 }
