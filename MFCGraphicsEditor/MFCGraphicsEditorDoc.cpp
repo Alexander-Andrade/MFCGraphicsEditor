@@ -76,7 +76,7 @@ void CMFCGraphicsEditorDoc::Serialize(CArchive& ar)
 			ar >> sh;
 			m_figures.push_back(std::unique_ptr<Shape>(sh));
 		}
-		
+		//restoreArrowLinks();
 	}
 }
 
@@ -200,5 +200,21 @@ void CMFCGraphicsEditorDoc::finishArrowCreation(CPoint& p) {
 		//delete incorrect arrow
 		else
 			m_figures.pop_back();
+	}
+}
+
+void CMFCGraphicsEditorDoc::restoreArrowLinks() {
+	Arrow* fig = nullptr;
+	Shape* backFig = nullptr;
+	Shape* frontFig = nullptr;
+	for (std::unique_ptr<Shape>& sh : m_figures) {
+		if (typeid(*sh.get()) == typeid(Arrow)) {
+			backFig = getFigUnderThePoint(sh->points()[0]);
+			frontFig = getFigUnderThePoint(sh->points()[1]);
+			if (backFig != nullptr && frontFig != nullptr)
+				fig = (Arrow*)sh.get();
+			fig->setBackFig(backFig);
+			fig->setFrontFig(frontFig);
+		}
 	}
 }

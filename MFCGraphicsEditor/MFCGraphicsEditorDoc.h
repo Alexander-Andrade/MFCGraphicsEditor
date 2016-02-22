@@ -32,6 +32,7 @@ public:
 	void stretchShapeUnderCreation(CPoint& p);
 	//determine whether Cpoint situated at one of the created figures
 	Shape* getFigUnderThePoint(CPoint& p);
+	void restoreArrowLinks();
 	void finishArrowCreation(CPoint& p);
 // Overrides
 public:

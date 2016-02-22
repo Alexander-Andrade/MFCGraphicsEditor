@@ -144,7 +144,7 @@ void Arrow::draw(CDC* pDC) {
 void Arrow::Serialize(CArchive& ar) {
 	Shape::Serialize(ar);
 	if (ar.IsStoring()) {
-		ar << _backFig->points()[0] << _frontFig->points()[1];
+		ar << _backFig->getBoundingRect().CenterPoint() << _frontFig->getBoundingRect().CenterPoint();
 	}
 	else{
 		ar >> _points[0] >> _points[1];
