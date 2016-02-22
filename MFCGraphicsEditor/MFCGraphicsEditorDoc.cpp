@@ -169,7 +169,7 @@ void CMFCGraphicsEditorDoc::stretchShapeUnderCreation(CPoint& p2) {
 	//Shape::correctAnchorPoints(points_ref[0],points_ref[1]);
 }
 
-Shape* CMFCGraphicsEditorDoc::theFigure(CPoint& p) {
+Shape* CMFCGraphicsEditorDoc::getFigUnderThePoint(CPoint& p) {
 	for (std::unique_ptr<Shape>& fig : m_figures)
 		if (fig->isInternalPoint(p) == true)
 			return fig.get();
@@ -181,8 +181,8 @@ void CMFCGraphicsEditorDoc::finishArrowCreation(CPoint& p) {
 	//is figure an arrow
 	if (typeid(*fig) == typeid(Arrow)) {
 		//test the edge points
-		Shape* back_fig = theFigure(fig->points()[0]);
-		Shape* front_fig = theFigure(p);
+		Shape* back_fig = getFigUnderThePoint(fig->points()[0]);
+		Shape* front_fig = getFigUnderThePoint(p);
 		if (back_fig != nullptr && front_fig != nullptr) {
 			fig->points()[1] = p;
 			fig->setBackFig(back_fig);

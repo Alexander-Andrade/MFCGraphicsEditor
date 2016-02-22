@@ -17,6 +17,8 @@ public:
 	CMFCGraphicsEditorDoc* GetDocument() const;
 	CDC m_dcMem;
 	CBitmap m_bmpMem;
+	//for moving
+	CPoint memPoint;
 // Operations
 public:
 

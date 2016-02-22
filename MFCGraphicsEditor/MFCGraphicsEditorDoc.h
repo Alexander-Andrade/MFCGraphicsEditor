@@ -31,7 +31,7 @@ public:
 	void addANewShapeToList(CPoint& p1,CPoint& p2);
 	void stretchShapeUnderCreation(CPoint& p);
 	//determine whether Cpoint situated at one of the created figures
-	Shape* theFigure(CPoint& p);
+	Shape* getFigUnderThePoint(CPoint& p);
 	void finishArrowCreation(CPoint& p);
 // Overrides
 public:

@@ -30,6 +30,7 @@ public:
 	}
 	virtual bool isInternalPoint(CPoint& p);
 	virtual CRect getBoundingRect();
+	void move(CPoint& delta);
 	std::vector<CPoint>& points() { return _points; }
 };
 

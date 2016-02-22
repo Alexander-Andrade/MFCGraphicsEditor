@@ -165,10 +165,11 @@ void CMFCGraphicsEditorView::OnLButtonDown(UINT nFlags, CPoint point){
 	// TODO: Add your message handler code here and/or call default
 	CMFCGraphicsEditorDoc* doc =  GetDocument();
 	//create new figure
-	if(nFlags == MK_LBUTTON && doc->m_stateMashine != StateMashine::Motion && doc->m_stateMashine != StateMashine::InitState)
-		doc->addANewShapeToList(point,point);
+	if (nFlags == MK_LBUTTON && doc->m_stateMashine != StateMashine::Motion && doc->m_stateMashine != StateMashine::InitState)
+		doc->addANewShapeToList(point, point);
 	//try to move existing figures
-	//else
+	else if (nFlags == MK_LBUTTON && doc->m_stateMashine == StateMashine::Motion)
+		memPoint = point;
 
 	CView::OnLButtonDown(nFlags, point);
 }
@@ -198,7 +199,14 @@ void CMFCGraphicsEditorView::OnMouseMove(UINT nFlags, CPoint point)
 	// continue of figure creation
 	if (nFlags == MK_LBUTTON && doc->m_stateMashine != StateMashine::Motion && doc->m_stateMashine != StateMashine::InitState)
 		doc->stretchShapeUnderCreation(point);
-	//else
+	//shift all the object pixels on the delta value
+	else if (nFlags == MK_LBUTTON && doc->m_stateMashine == StateMashine::Motion) {
+		CPoint delta = point - memPoint;
+		Shape* fig = doc->getFigUnderThePoint(point);
+		if(fig != nullptr)
+			fig->move(delta);
+	}
+
 
 	doc->SetModifiedFlag(TRUE);
 	Invalidate();

@@ -29,6 +29,11 @@ void Shape::correctAnchorPoints(CPoint& p1, CPoint& p2) {
 		std::swap(p1.y, p2.y);
 }
 
+void Shape::move(CPoint& delta) {
+	for (CPoint& p : _points)
+		p += delta;
+}
+
 bool Shape::isInternalPoint(CPoint& p) {
 	//is internal point of the bounding rect
 	std::pair<int, int> x_coords = std::minmax(_points[0].x,_points[1].x);
@@ -55,7 +60,6 @@ void Rect::draw(CDC* pDC) {
 void Rect::Serialize(CArchive& ar) {
 	Shape::Serialize(ar);
 }
-
 
 // Circle
 Ellip::Ellip(CPoint& topleft = CPoint(0, 0), CPoint& bottomright = CPoint(0, 0)) : Shape(topleft, bottomright) {
