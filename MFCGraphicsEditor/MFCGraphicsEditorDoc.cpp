@@ -76,7 +76,7 @@ void CMFCGraphicsEditorDoc::Serialize(CArchive& ar)
 			ar >> sh;
 			m_figures.push_back(std::unique_ptr<Shape>(sh));
 		}
-		//restoreArrowLinks();
+		restoreArrowLinks();
 	}
 }
 
