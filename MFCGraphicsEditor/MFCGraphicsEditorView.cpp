@@ -205,6 +205,7 @@ void CMFCGraphicsEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		Shape* fig = doc->getFigUnderThePoint(point);
 		if(fig != nullptr)
 			fig->move(delta);
+		memPoint = point;
 	}
 
 
