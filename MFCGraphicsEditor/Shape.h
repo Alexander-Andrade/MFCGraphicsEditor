@@ -1,4 +1,6 @@
 #pragma once
+#include <algorithm>
+#include <utily>
 
 // Shape command target
 class Shape : public CObject{
@@ -25,6 +27,7 @@ public:
 		pDC->SelectObject(pOldBrush);
 		pOldBrush->DeleteObject();
 	}
+	virtual bool isInternalPoint(CPoint& p);
 	CArray<CPoint>& points() { return _points; }
 };
 

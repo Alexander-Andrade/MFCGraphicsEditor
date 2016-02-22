@@ -152,7 +152,7 @@ public:
 
 
 void CMFCGraphicsEditorDoc::fillFactoryMap() {
-	_factoryMap[StateMashine::RectCreatute] = [](CPoint& p1, CPoint& p2) {return new Rect(p1,p2); };
+	_factoryMap[StateMashine::RectCreatute] = FigureFact<Rect>();
 	_factoryMap[StateMashine::EllipseCreature] = FigureFact<Ellip>();
 	_factoryMap[StateMashine::TriangleCreature] = FigureFact<Triangle>();
 	_factoryMap[StateMashine::ArrowCreature] = FigureFact<Arrow>();
@@ -166,10 +166,10 @@ void CMFCGraphicsEditorDoc::addANewShapeToList(CPoint& p1, CPoint& p2) {
 	m_figures.AddTail(getFigureFromFactory(p1,p2));
 }
 
-void CMFCGraphicsEditorDoc::stretchShapeUnderCreation(CPoint& p) {
+void CMFCGraphicsEditorDoc::stretchShapeUnderCreation(CPoint& p2) {
 	Shape* createdShape = m_figures.GetTail();
-	CPoint p1 = createdShape->points()[0];
-	CPoint p2 = createdShape->points()[1];
-	createdShape->points()[1] = p;
+	CArray<CPoint>& points_ref = createdShape->points();
+	points_ref[1] = p2;
+	//Shape::correctAnchorPoints(points_ref[0],points_ref[1]);
 }
 

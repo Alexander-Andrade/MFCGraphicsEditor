@@ -12,7 +12,7 @@ Shape::Shape(CPoint& topleft = CPoint(0,0),CPoint& bottomright = CPoint(0,0),int
 	_points[0] = topleft;
 	_points[1] = bottomright;
 	_pen.CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
-	_brush.CreateSolidBrush(RGB(0, 0, 0));
+	_brush.CreateSolidBrush(RGB(255, 0, 0));
 }
 IMPLEMENT_SERIAL(Shape, CObject, 2)
 Shape::~Shape(){
@@ -22,6 +22,19 @@ void Shape::Serialize(CArchive& ar) {
 	CObject::Serialize(ar);
 }
 
+void Shape::correctAnchorPoints(CPoint& p1, CPoint& p2) {
+	if (p1.x > p2.x)
+		std::swap(p1.x, p2.x);
+	if (p1.y > p2.y)
+		std::swap(p1.y, p2.y);
+}
+
+bool Shape::isInternalPoint(CPoint& p) {
+	//is internal point of the bounding rect
+	std::pair<int, int> x_coords = std::minmax(_points[0].x,_points[1].x);
+	std::pair<int, int> y_coord = std::minmax(_points[0].y, _points[1].y);
+	return p.x > x_coords.first && p.x < x_coords.second && p.y > y_coord.first && p.y < y_coord.second;
+}
 
 // Rectangle
 Rect::Rect(CPoint& topleft = CPoint(0, 0), CPoint& bottomright = CPoint(0, 0)) : Shape(topleft, bottomright) {
